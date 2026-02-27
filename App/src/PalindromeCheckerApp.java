@@ -1,20 +1,30 @@
-public class PalindromeCheckerApp {
+public class UseCase4PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         String input = "madam";   // Hardcoded string
-        String reversed = "";
+        char[] characters = input.toCharArray();
 
-        // Iterate from the last character to the first
-        for (int i = input.length() - 1; i >= 0; i--) {
-            reversed = reversed + input.charAt(i);
+        int start = 0;
+        int end = characters.length - 1;
+        boolean isPalindrome = true;
+
+        // Two-pointer technique
+        while (start < end) {
+
+            if (characters[start] != characters[end]) {
+                isPalindrome = false;
+                break;
+            }
+
+            start++;
+            end--;
         }
 
-        // Compare original and reversed string
-        if (input.equals(reversed)) {
+        if (isPalindrome) {
             System.out.println(input + " is a Palindrome");
         } else {
             System.out.println(input + " is NOT a Palindrome");
         }
     }
-}-
+}
