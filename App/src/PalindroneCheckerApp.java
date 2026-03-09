@@ -1,34 +1,60 @@
-public class PalindroneCheckerApp {
+import java.util.Stack;
+import java.util.Deque;
+import java.util.LinkedList;
 
-    public static void main(String[] args) {
-
-        String input = "madam";
-
-        PalindromeService service = new PalindromeService();
-
-        boolean result = service.checkPalindrome(input);
-
-        System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + result);
-    }
+interface PalindromeStrategy {
+    boolean check(String input);
 }
 
-class PalindromeService {
+class StackStrategy implements PalindromeStrategy {
 
-    public boolean checkPalindrome(String input) {
+    public boolean check(String input) {
 
-        int start = 0;
-        int end = input.length() - 1;
+        Stack<Character> stack = new Stack<>();
 
-        while (start < end) {
-            if (input.charAt(start) != input.charAt(end)) {
+        for (char c : input.toCharArray()) {
+            stack.push(c);
+        }
+
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
                 return false;
             }
-            start++;
-            end--;
         }
 
         return true;
     }
 }
 
+class DequeStrategy implements PalindromeStrategy {
+
+    public boolean check(String input) {
+
+        Deque<Character> deque = new LinkedList<>();
+
+        for (char c : input.toCharArray()) {
+            deque.addLast(c);
+        }
+
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+class PalindromeContext {
+
+    private PalindromeStrategy strategy;
+
+    public PalindromeContext(PalindromeStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public boolean check(String input) {
+        return strategy.check(input);
+    }
+}
